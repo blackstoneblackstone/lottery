@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>抽奖</title>
+    <script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <style>
+    body,.conn{
+        margin: 0;
+        padding: 0;
+        width: 2624px;
+        height: 512px;
+        background: url(images/bannner.jpg) no-repeat;
+        background-size: 2624px 512px;
+    }
+
+    .conn{
+    	position: absolute;
+    	  width: 2624px;
+        height: 512px;
+        background: url(images/bannner.jpg) no-repeat;
+        background-size: 2624px 512px;
+    }
+    
+    .main_bg {
+        height: 500px;
+        text-align: center;
+        width: 1000px;
+        margin: 200px auto;
+    }
+    
+    .main {
+        background: url(images/main_bg1.jpg) no-repeat;
+        background-size: 100% 100%;
+        width: 300px;
+        height: 300px;
+        float: left;
+        margin-left: 30px;
+    }
+    
+    .main1 {}
+    
+    .main2 {}
+    
+    .main3 {}
+    
+    .num_mask {
+        background: url(images/num_mask1.png) no-repeat;
+        background-size: 100% 100%;
+        height: 184px;
+        width: 300px;
+        position: absolute;
+    }
+    
+    .num_box {
+        height: 450px;
+        width: 300px;
+        overflow: hidden;
+        text-align: center;
+        margin-left: 10px;
+    }
+    
+    .num {
+        background: url(images/num.png) top center repeat-y;
+        width: 140px;
+        height: 265px;
+        float: left;
+        margin-top: 20px;
+    }
+    
+    .btn {
+        background: url(images/btn_start.png) 0px 0px no-repeat;
+        width: 264px;
+        height: 89px;
+        position: absolute;
+        bottom: 50px;
+        margin-left: -132px;
+        cursor: pointer;
+        clear: both;
+    }
+    </style>
+</head>
+<body id="con">
+<!-- <img src="images/bannner.jpg" style="postion:absolute;top:0px;z-index:1; width: 2624px;height: 512px;"> -->
+   <div class="conn">
+    <div class="main_bg"  >
+        <div class="main1 main">
+            <div class="num_mask"></div>
+            <div class="num_box">
+                <div class="num1 num"></div>
+                <div class="num1 num"></div>
+            </div>
+        </div>
+        <div class="main2 main">
+            <div class="num_mask"></div>
+            <div class="num_box">
+                <div class="num2 num"></div>
+                <div class="num2 num"></div>
+            </div>
+        </div>
+        <div class="main3 main">
+            <div class="num_mask"></div>
+            <div class="num_box">
+                <div class="num3 num"></div>
+                <div class="num3 num"></div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="btn" style="left:30%" id="btn1"></div>
+    <div class="btn" style="left:50%" id="btn2"></div>
+    <div class="btn" style="left:70%" id="btn3"></div> -->
+    <!-- <br>
+
+       <br>
+          <br>
+             <br> -->
+    <!-- <div class="btn" style="left:50%" id="full">全屏</div> -->
+    </div>
+</body>
+
+</html>
+<script>
+var data = [];
+
+function numRand() {
+    var x = 53; //上限
+    var y = 10; //下限
+    var rand = parseInt(Math.random() * (x - y + 1) + y);
+    for (var i = 0; i < data.length; i++) {
+        if (rand == data[i]) {
+            return numRand();
+        }
+    }
+    data.push(rand);
+    return rand;
+}
+// var isBegin = false;
+
+function start() {
+
+    $(".num").each(function(index) {
+        var _num = $(this);
+        _num.animate({
+            backgroundPositionY: 60000000000
+        }, {
+            duration: 1000000,
+            easing: "easeInCubic"
+        });
+    });
+}
+
+
+$(function() {
+
+
+
+    function full() {
+        var elem = document.getElementById("con");
+        requestFullScreen(elem);
+    };
+
+    function requestFullScreen(element) {
+
+        var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+        if (requestMethod) {
+            requestMethod.call(element);
+        } else if (typeof window.ActiveXObject !== "undefined") {
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+
+        $("body").css("background","url(images/bannner.jpg) no-repeat");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var u = 265;
+
+    var a = 0;
+
+
+    $(document).keydown(function(event) {
+        switch (event.keyCode) {
+            case 49:
+                fun1();
+                break;
+            case 50:
+                fun2();
+                break;
+            case 51:
+                fun3();
+                break;
+            case 0x20:
+                full();
+                break;
+
+        };
+        return false;
+    });
+
+
+    function fun1() {
+
+        $(".main_bg").css("width", "1000px");
+        $(".main1").show();
+        $(".main2").show();
+        $(".main3").show();
+
+        if (a == 0) {
+            start();
+            a = 1;
+            $('#btn1').css("background", "url(images/btn_end.png) 0px 0px no-repeat");
+            return;
+        }
+        a = 0;
+        end();
+        $('#btn1').css("background", "url(images/btn_start.png) 0px 0px no-repeat");
+    };
+
+    function fun2() {
+
+        $(".main_bg").css("width", "700px");
+
+        $(".main1").show();
+        $(".main2").show();
+        $(".main3").hide();
+
+        if (a == 0) {
+            start();
+            a = 1;
+            $('#btn2').css("background", "url(images/btn_end.png) 0px 0px no-repeat");
+            return;
+        }
+
+
+        a = 0;
+        $('#btn2').css("background", "url(images/btn_start.png) 0px 0px no-repeat");
+        end();
+    }
+
+    function fun3() {
+        $(".main1").show();
+        $(".main2").hide();
+        $(".main3").hide();
+        $(".main_bg").css("width", "350px");
+        if (a == 0) {
+            start();
+            a = 1;
+            $('#btn3').css("background", "url(images/btn_end.png) 0px 0px no-repeat");
+            return;
+        }
+
+
+        a = 0;
+        $('#btn3').css("background", "url(images/btn_start.png) 0px 0px no-repeat");
+        end();
+    }
+
+
+    function end() {
+
+
+
+        $(".num").each(function(index) {
+            var _num = $(this);
+            _num.stop(false, false);
+        });
+        // if (isBegin) return false;
+        // isBegin = true;
+        // $(".num").css('backgroundPositionY', 0);
+        var result1 = numRand();
+        var result2 = numRand();
+        var result3 = numRand();
+
+
+        console.log(result1);
+        console.log(result2);
+        console.log(result3);
+
+
+        while (result1 == result2 || result1 == result3 || result2 == result3) {
+            result1 = numRand();
+            result2 = numRand();
+            result3 = numRand();
+        }
+        var num_arr1 = (result1 + '').split('');
+        $(".num1").each(function(index) {
+            var _num = $(this);
+
+            _num.animate({
+                backgroundPositionY: (u * 60) - (u * num_arr1[index])
+            }, {
+                duration: 1000 + index * 3000,
+                easing: "easeOutCubic",
+                complete: function() {
+                    if (index == 3) isBegin = false;
+                }
+            });
+
+        });
+
+        var num_arr2 = (result2 + '').split('');
+        $(".num2").each(function(index) {
+            var _num = $(this);
+            _num.animate({
+                backgroundPositionY: (u * 60) - (u * num_arr2[index])
+            }, {
+                duration: 2000 + index * 3000,
+                easing: "easeOutCubic",
+                complete: function() {
+                    if (index == 3) isBegin = false;
+                }
+            });
+        });
+        var num_arr3 = (result3 + '').split('');
+        $(".num3").each(function(index) {
+            var _num = $(this);
+            _num.animate({
+                backgroundPositionY: (u * 60) - (u * num_arr3[index])
+            }, {
+                duration: 3000 + index * 3000,
+                easing: "easeOutCubic",
+                complete: function() {
+                    if (index == 3) isBegin = false;
+                }
+            });
+        });
+    }
+});
+</script>

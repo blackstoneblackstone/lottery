@@ -5,3 +5,5 @@
 - 分支: master, 分三种模式，分别通过点击 1 2 3 键实现，可同时抽，1 ，2 ，3 个数字，但只能是两位数。
 ## 体验地址
 [点击体验](http://www.simamedia.cn/games/lottery)
+## 效果图
+<img src="doc/1516941150598.jpg">
